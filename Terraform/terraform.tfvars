@@ -18,3 +18,4 @@ instance_type = "t2.medium"
 ami_image= "ami-0614680123427b75e"
 
 ec2_names = [  "frontend-vt-rs-ec2", "backend-rd-wk-ec2", "db-ps-ec2" ]
+security_groups = [ "aws_security_group.vote_result_sg.id", "aws_security_group.redis_worker_sg.id" ,"aws_security_group.postgres_sg.id" ]
