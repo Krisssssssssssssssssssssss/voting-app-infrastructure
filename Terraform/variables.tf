@@ -25,7 +25,7 @@ variable "private_subnet_cidr_block" {
 
 variable "region" {
   type        = string
-  default     = "us-east-1"
+  default     = "ap-south-1"
   description = "default region where infrastructures will be provisioned"
 }
 
@@ -34,8 +34,10 @@ variable "availability_zone" {
   type = map(string)
 
   default = {
-    private_subnet_az = "us-east-1b"
-    public_subnet_az  = "us-east-1a"
+    public_subnet_az  = "ap-south-1a"
+    private_subnet1_az = "ap-south-1b"
+    private_subnet2_az = "ap-south-1c"
+    
   }
 
 }
@@ -43,6 +45,7 @@ variable "availability_zone" {
 variable "ami_image" {
 
   type = string
+  default = "ami-0614680123427b75e"
 
 }
 
