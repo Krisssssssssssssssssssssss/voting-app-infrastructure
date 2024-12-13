@@ -1,5 +1,4 @@
-output "public_ip_address" {
-
-  value = aws_instance.public_ec2.public_ip
-
-}
+output "all_public_ips" {
+  
+  value = { for key, instance in aws_instance.vm : key => instance.public_ip }
+  }

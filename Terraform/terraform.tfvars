@@ -13,6 +13,8 @@ public_subnet_cidr_block = "10.0.1.0/24"
 
 private_subnet_cidr_block = "10.0.2.0/24"
 
-ami_image = "ami-0614680123427b75e"
+instance_type = "t2.medium"
 
-instance_type = "t2.micro"
+ami_image= "ami-0614680123427b75e"
+
+ec2_names = [  "frontend-vt-rs-ec2", "backend-rd-wk-ec2", "db-ps-ec2" ]

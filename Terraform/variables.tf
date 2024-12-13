@@ -56,3 +56,15 @@ variable "instance_type" {
   default = "t2.micro"
 
 }
+variable "ec2_names" {
+    description = "To define ec2 instance name"
+    type = set(string)
+
+}
+
+variable "env" {
+    default = "prod"
+    description = "To specify environment"
+    type = string
+  
+}
