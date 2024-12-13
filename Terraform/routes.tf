@@ -13,7 +13,7 @@ resource "aws_route_table" "public" {
 
 # Associate Public Subnet with Public Route Table
 resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.main["public"].id
+  subnet_id      = aws_subnet.main["public1"].id
   route_table_id = aws_route_table.public.id
 }
 

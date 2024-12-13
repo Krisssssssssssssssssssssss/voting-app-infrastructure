@@ -1,0 +1,10 @@
+# Local Terraform execution files
+*.tfstate
+*.tfstate.backup
+# Crash log files
+crash.log
+# Ignore Terraform variable files with secrets
+*.tfvars.json
+# Terraform lock file
+.terraform.lock.hcl
+.terraform

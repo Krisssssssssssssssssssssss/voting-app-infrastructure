@@ -64,23 +64,28 @@ variable "subnets" {
     is_public  = bool
   }))
   default = {
-    public = {
+    public1 = {
       cidr_block = "10.0.1.0/24"
       az         = "ap-south-1a"
       is_public  = true
     }
-    private_1 = {
+    public2 = {
       cidr_block = "10.0.2.0/24"
+      az         = "ap-south-1a"
+      is_public  = true
+    }
+    private_1 = {
+      cidr_block = "10.0.3.0/24"
       az         = "ap-south-1b"
       is_public  = false
     }
     private_2 = {
-      cidr_block = "10.0.3.0/24"
+      cidr_block = "10.0.4.0/24"
       az         = "ap-south-1c"
       is_public  = false
     }
     private_3 = {
-      cidr_block = "10.0.4.0/24"
+      cidr_block = "10.0.5.0/24"
       az         = "ap-south-1a"
       is_public  = false
     }

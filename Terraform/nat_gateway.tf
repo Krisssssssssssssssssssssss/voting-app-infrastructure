@@ -1,6 +1,6 @@
 # Elastic IP for NAT Gateway
 resource "aws_eip" "nat" {
-  vpc = true
+  #vpc = true
 
   tags = {
     Name = "${var.vpc_name}-NAT-EIP"
@@ -10,7 +10,7 @@ resource "aws_eip" "nat" {
 # NAT Gateway
 resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat.id
-  subnet_id = aws_subnet.main["public"].id
+  subnet_id = aws_subnet.main["public1"].id
 
   tags = {
     Name = "${var.vpc_name}-NAT"
