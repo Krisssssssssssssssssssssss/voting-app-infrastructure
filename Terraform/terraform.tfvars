@@ -9,6 +9,8 @@ cidr_block = "10.0.0.0/16"
 
 vpc_name = "KSD_VPC"
 
-ami_image = "ami-0614680123427b75e"
+instance_type = "t2.medium"
 
-instance_type = "t2.micro"
+ami_image= "ami-0614680123427b75e"
+
+ec2_names = [  "frontend-vt-rs-ec2", "backend-rd-wk-ec2", "db-ps-ec2" ]
