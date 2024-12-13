@@ -1,0 +1,53 @@
+---
+- name: Install Docker and Setup User Access
+  hosts: ec2_instances
+  become: yes  # Run as root (using sudo)
+  tasks:
+    - name: Update apt cache (for Debian/Ubuntu systems)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600  # 1 hour
+
+    - name: Install required dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker's official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Set up the Docker stable repository
+      apt_repository:
+        repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'
+        state: present
+
+    - name: Install Docker CE
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add user to the Docker group
+      user:
+        name: "{{ ansible_user }}"  # Ensure your SSH user is in the docker group
+        group: docker
+        append: yes
+
+    - name: Verify Docker version
+      command: docker --version
+      register: docker_version
+
+    - name: Print Docker version
+      debug:
+        msg: "Docker version installed: {{ docker_version.stdout }}"

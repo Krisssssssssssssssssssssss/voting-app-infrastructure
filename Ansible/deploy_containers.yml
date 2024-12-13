@@ -1,0 +1,110 @@
+---
+- name: Deploy Containers to EC2
+  hosts: ec2_instances
+  become: yes
+  vars:
+    # Define image names as variables for easier customization
+    vote_app_image: "myusername/vote:latest"
+    result_app_image: "myusername/result:latest"
+    redis_host: "redis.internal"
+    db_host: "db.internal"
+    db_user: "postgres"
+    db_password: "postgres"
+
+  tasks:
+    - name: Ensure Docker is installed (in case Docker was not installed)
+      command: docker --version
+      register: docker_installed
+      failed_when: docker_installed.rc != 0
+      changed_when: False
+
+    - name: Pull vote app image from DockerHub
+      docker_image:
+        name: "{{ vote_app_image }}"
+        source: pull
+      register: vote_app_image_pulled
+
+    - name: Pull result app image from DockerHub
+      docker_image:
+        name: "{{ result_app_image }}"
+        source: pull
+      register: result_app_image_pulled
+
+    - name: Pull Redis image from DockerHub
+      docker_image:
+        name: redis:alpine
+        source: pull
+
+    - name: Pull PostgreSQL image from DockerHub
+      docker_image:
+        name: postgres:15-alpine
+        source: pull
+
+    - name: Run Redis container
+      docker_container:
+        name: redis
+        image: redis:alpine
+        state: started
+        restart_policy: always
+        env:
+          REDIS_PASSWORD: "your_redis_password"
+
+    - name: Run PostgreSQL container
+      docker_container:
+        name: db
+        image: postgres:15-alpine
+        state: started
+        restart_policy: always
+        env:
+          POSTGRES_USER: "{{ db_user }}"
+          POSTGRES_PASSWORD: "{{ db_password }}"
+        volumes:
+          - db-data:/var/lib/postgresql/data
+
+    - name: Run the vote app container
+      docker_container:
+        name: vote_app
+        image: "{{ vote_app_image }}"
+        state: started
+        ports:
+          - "8080:80"
+        env:
+          REDIS_HOST: "{{ redis_host }}"
+          DB_HOST: "{{ db_host }}"
+          DB_USER: "{{ db_user }}"
+          DB_PASSWORD: "{{ db_password }}"
+        links:
+          - redis
+          - db
+
+    - name: Run the result app container
+      docker_container:
+        name: result_app
+        image: "{{ result_app_image }}"
+        state: started
+        ports:
+          - "8081:80"
+        env:
+          DB_HOST: "{{ db_host }}"
+          DB_USER: "{{ db_user }}"
+          DB_PASSWORD: "{{ db_password }}"
+        links:
+          - db
+
+    - name: Run the worker container
+      docker_container:
+        name: worker
+        image: dockersamples/examplevotingapp_worker
+        state: started
+        restart_policy: always
+        env:
+          REDIS_HOST: "{{ redis_host }}"
+          DB_HOST: "{{ db_host }}"
+          DB_USER: "{{ db_user }}"
+          DB_PASSWORD: "{{ db_password }}"
+        links:
+          - redis
+          - db
+
+volumes:
+  db-data:
