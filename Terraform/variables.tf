@@ -59,7 +59,7 @@ variable "availability_zone" {
 
 variable "ami_image" {
   type = string
-  default = "ami-0614680123427b75e"
+  default = "ami-053b12d3152c0cc71"
 }
 
 variable "instance_type" {
