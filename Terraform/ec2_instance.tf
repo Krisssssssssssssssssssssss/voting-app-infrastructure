@@ -1,16 +1,40 @@
-# resource "aws_instance" "vm" {
-#   # Use zipmap to combine ec2_names and security_groups into a map
-#   for_each = zipmap(var.ec2_names, var.security_groups)
+resource "aws_instance" "frontend" {
+  ami           = var.ami_image                   
+  instance_type = var.instance_type               
+  subnet_id     = aws_subnet.main["private_1"].id 
 
-#   ami           = var.ami_image
-#   instance_type = var.instance_type
-#   key_name      = "KDS_kp.pem"  # Ensure this key pair exists
+  # Attach the frontend security group
+  vpc_security_group_ids = [aws_security_group.frontend_sg.id]
 
-#   # Correctly referencing the security group ID for each instance
-#   security_groups = [each.value]  # Use each.value to get the security group ID
+  # Tags for organization
+  tags = {
+    Name = "frontend-vote-result-ec2"
+    Env  = var.env
+  }
+}
+resource "aws_instance" "backend" {
+  ami           = var.ami_image                   
+  instance_type = var.instance_type               
+  subnet_id     = aws_subnet.main["private_3"].id
 
-#   tags = {
-#     "Name" = each.key  # Use each.key for the EC2 instance name
-#     "env"  = var.env
-#   }
-# }
+  # Attach the backend security group
+  vpc_security_group_ids = [aws_security_group.redis_worker_sg.id]
+
+  tags = {
+    Name = "backend-redis-worker-ec2"
+    Env  = var.env
+  }
+}
+resource "aws_instance" "database" {
+  ami           = var.ami_image                   
+  instance_type = var.instance_type               
+  subnet_id     = aws_subnet.main["private_3"].id 
+
+  # Attach the database security group
+  vpc_security_group_ids = [aws_security_group.postgres_sg.id]
+
+  tags = {
+    Name = "database-ec2"
+    Env  = var.env
+  }
+}
