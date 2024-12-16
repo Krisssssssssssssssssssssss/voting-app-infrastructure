@@ -1,11 +1,11 @@
 ---
 - name: Deploy Containers to EC2
-  hosts: ec2_instances
+  hosts: all
   become: yes
   vars:
     # Define image names as variables for easier customization
-    vote_app_image: "myusername/vote:latest"
-    result_app_image: "myusername/result:latest"
+    vote_app_image: "dockersamples/examplevotingapp_vote:latest"
+    result_app_image: "dockersamples/examplevotingapp_result:latest"
     redis_host: "redis.internal"
     db_host: "db.internal"
     db_user: "postgres"
@@ -106,5 +106,5 @@
           - redis
           - db
 
-volumes:
-  db-data:
+  # Volumes should be defined at the container level if required, not here at the play level
+  # The volume configuration for db-data is inside the container tasks above
