@@ -10,6 +10,23 @@ variable "vpc_name" {
   description = "Name of the custom VPC"
 }
 
+variable "vpc_id" {
+  type        = string
+  description = "VPC id"
+}
+
+variable "subnet_ids" {
+  type = map(string)
+
+  default = {
+    public_subnet  = "ap-south-1a"
+    private_subnet1 = "ap-south-1b"
+    private_subnet2 = "ap-south-1c"
+    private_subnet3 = "ap-south-1c"
+}
+
+}
+
 variable "public_subnet_cidr_block" {
   type        = string
   default     = "10.0.1.0/24"
@@ -52,6 +69,11 @@ variable "instance_type" {
 }
 variable "ec2_names" {
     description = "To define ec2 instance name"
+    type = set(string)
+
+}
+variable "security_groups" {
+    description = "To define sg name"
     type = set(string)
 
 }
