@@ -57,26 +57,26 @@ variable "availability_zone" {
 
 }
 
-variable "ami_image" {
-  type = string
-  default = "ami-053b12d3152c0cc71"
-}
+# variable "ami_image" {
+#   type = string
+#   default = "ami-053b12d3152c0cc71"
+# }
 
-variable "instance_type" {
-  type = string
-  default = "t2.micro"
+# variable "instance_type" {
+#   type = string
+#   default = "t2.micro"
 
-}
-variable "ec2_names" {
-    description = "To define ec2 instance name"
-    type = set(string)
+# }
+# variable "ec2_names" {
+#     description = "To define ec2 instance name"
+#     type = set(string)
 
-}
-variable "security_groups" {
-    description = "To define sg name"
-    type = set(string)
+# }
+# variable "security_groups" {
+#     description = "To define sg name"
+#     type = set(string)
 
-}
+# }
 
 variable "env" {
     default = "prod"
@@ -107,7 +107,7 @@ variable "subnets" {
     }
     public2 = {
       cidr_block = "10.0.2.0/24"
-      az         = "ap-south-1a"
+      az         = "ap-south-1b"
       is_public  = true
     }
     private_1 = {
