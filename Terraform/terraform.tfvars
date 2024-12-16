@@ -9,6 +9,8 @@ cidr_block = "10.0.0.0/16"
 
 vpc_name = "KSD_VPC"
 
+vpc_id = "vpc-0dc989d432f85d193"
+
 instance_type = "t2.micro"
 
 ami_image= "ami-053b12d3152c0cc71"
