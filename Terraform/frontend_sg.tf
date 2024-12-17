@@ -27,6 +27,6 @@ resource "aws_security_group" "frontend_sg" {
   }
 
   tags = {
-    Name = "frontend_sg"
+    Name = "kri-frontend_sg"
   }
 }

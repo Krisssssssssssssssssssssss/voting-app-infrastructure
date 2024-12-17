@@ -9,7 +9,7 @@ cidr_block = "10.0.0.0/16"
 
 vpc_name = "kri-KSD_VPC"
 
-vpc_id = "vpc-0dc989d432f85d193"
+vpc_id = "vpc-0664e7f9c3afa7adb"
 
 instance_type = "t2.micro"
 

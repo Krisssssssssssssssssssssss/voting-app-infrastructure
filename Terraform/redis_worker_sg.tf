@@ -36,6 +36,6 @@ ingress {
   }
 
   tags = {
-    Name = "redis_worker_sg"
+    Name = "kri-redis_worker_sg"
   }
 }
