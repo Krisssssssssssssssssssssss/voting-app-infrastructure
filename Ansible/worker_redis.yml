@@ -1,0 +1,44 @@
+---
+- name: Deploy Worker and Redis to EC2
+  hosts: others
+  become: yes
+  vars:
+    redis_host: "redis.internal"
+    db_host: "db.internal"
+    db_user: "postgres"
+    db_password: "postgres"
+
+  tasks:
+    - name: Pull Redis image from DockerHub
+      docker_image:
+        name: redis:alpine
+        source: pull
+
+    - name: Pull worker image from DockerHub
+      docker_image:
+        name: dockersamples/examplevotingapp_worker
+        source: pull
+
+    - name: Run Redis container
+      docker_container:
+        name: redis
+        image: redis:alpine
+        state: started
+        restart_policy: always
+        env:
+          REDIS_PASSWORD: "your_redis_password"
+
+    - name: Run the worker container
+      docker_container:
+        name: worker
+        image: dockersamples/examplevotingapp_worker
+        state: started
+        restart_policy: always
+        env:
+          REDIS_HOST: "{{ redis_host }}"
+          DB_HOST: "{{ db_host }}"
+          DB_USER: "{{ db_user }}"
+          DB_PASSWORD: "{{ db_password }}"
+        links:
+          - redis
+          - db

@@ -1,0 +1,31 @@
+---
+- name: Deploy PostgreSQL to EC2
+  hosts: hosts
+  become: yes
+  vars:
+    db_host: "db.internal"
+    db_user: "postgres"
+    db_password: "postgres"
+
+  tasks:
+    - name: Pull PostgreSQL image from DockerHub
+      docker_image:
+        name: postgres:15-alpine
+        source: pull
+
+    - name: Create a volume for PostgreSQL data
+      docker_volume:
+        name: db-data
+        state: present
+
+    - name: Run PostgreSQL container
+      docker_container:
+        name: db
+        image: postgres:15-alpine
+        state: started
+        restart_policy: always
+        env:
+          POSTGRES_USER: "{{ db_user }}"
+          POSTGRES_PASSWORD: "{{ db_password }}"
+        volumes:
+          - db-data:/var/lib/postgresql/data
