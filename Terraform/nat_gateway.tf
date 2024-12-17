@@ -3,7 +3,7 @@ resource "aws_eip" "nat" {
   #vpc = true
 
   tags = {
-    Name = "${var.vpc_name}-NAT-EIP"
+    Name = "kri-${var.vpc_name}-NAT-EIP"
   }
 }
 
@@ -13,7 +13,7 @@ resource "aws_nat_gateway" "main" {
   subnet_id = aws_subnet.main["public1"].id
 
   tags = {
-    Name = "${var.vpc_name}-NAT"
+    Name = "kri-${var.vpc_name}-NAT"
   }
 }
 
