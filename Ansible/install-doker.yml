@@ -1,13 +1,15 @@
 ---
 - name: Install Docker and Setup User Access
-  hosts: ec2_instances
-  become: yes  # Run as root (using sudo)
+  hosts: all
+  become: yes
   tasks:
+
+    # Step 1: Update apt cache (for Debian/Ubuntu systems)
     - name: Update apt cache (for Debian/Ubuntu systems)
       apt:
         update_cache: yes
-        cache_valid_time: 3600  # 1 hour
 
+    # Step 2: Install required dependencies (if not already installed)
     - name: Install required dependencies
       apt:
         name:
@@ -17,37 +19,41 @@
           - software-properties-common
         state: present
 
+    # Step 3: Add Docker's official GPG key
     - name: Add Docker's official GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
+    # Step 4: Set up the Docker stable repository (use Ubuntu's codename explicitly)
     - name: Set up the Docker stable repository
       apt_repository:
-        repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"  # Change 'focal' if using a different Ubuntu version
         state: present
 
-    - name: Install Docker CE
+    # Step 5: Install Docker
+    - name: Install Docker
       apt:
         name: docker-ce
         state: present
 
-    - name: Ensure Docker is running
+    # Step 6: Start and enable the Docker service
+    - name: Start Docker service
       service:
         name: docker
         state: started
         enabled: yes
 
-    - name: Add user to the Docker group
+    # Step 7: Add the user to the Docker group (e.g., ubuntu user)
+    - name: Add user to Docker group
       user:
-        name: "{{ ansible_user }}"  # Ensure your SSH user is in the docker group
+        name: "{{ ansible_user }}"
         group: docker
         append: yes
 
-    - name: Verify Docker version
-      command: docker --version
-      register: docker_version
-
-    - name: Print Docker version
+    # Step 8: Restart the SSH session (log out and log back in)
+    # Ansible does not handle automatic logout, so we rely on the user logging out and back in manually
+    - name: Notify user to log out and log back in
       debug:
-        msg: "Docker version installed: {{ docker_version.stdout }}"
+        msg: "Please log out and log back in to apply group changes."
+
