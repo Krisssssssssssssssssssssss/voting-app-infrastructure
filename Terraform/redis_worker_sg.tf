@@ -19,6 +19,14 @@ resource "aws_security_group" "redis_worker_sg" {
     self        = true
   }
 
+ingress {
+  description     = "Allow SSH from Bastion Host"
+  from_port       = 22
+  to_port         = 22
+  protocol        = "tcp"
+  security_groups = [aws_security_group.bastion_sg.id]
+}
+
   egress {
     description = "Allow traffic to PostgreSQL"
     from_port   = 5432

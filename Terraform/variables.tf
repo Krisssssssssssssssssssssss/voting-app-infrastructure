@@ -107,7 +107,7 @@ variable "subnets" {
     }
     public2 = {
       cidr_block = "10.0.2.0/24"
-      az         = "ap-south-1a"
+      az         = "ap-south-1b"
       is_public  = true
     }
     private_1 = {

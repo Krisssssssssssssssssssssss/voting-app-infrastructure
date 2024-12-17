@@ -13,8 +13,16 @@ resource "aws_security_group" "postgres_sg" {
       aws_subnet.main["private_2"].cidr_block
     ]
   }
+  ingress {
+  description     = "Allow SSH from Bastion Host"
+  from_port       = 22
+  to_port         = 22
+  protocol        = "tcp"
+  security_groups = [aws_security_group.bastion_sg.id]
+}
+
 
   tags = {
-    Name = "postgres_sg"
+    Name = "kri-postgres_sg"
   }
 }

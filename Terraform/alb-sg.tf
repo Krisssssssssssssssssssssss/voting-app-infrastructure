@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb_sg" {
-  name        = "allow_alb_traffic"
+  name        = "kri-allow_alb_traffic"
   description = "Allow traffic to and from the ALB"
   vpc_id      = aws_vpc.main.id
 
@@ -28,6 +28,6 @@ resource "aws_security_group" "alb_sg" {
   }
 
   tags = {
-    Name = "alb_sg"
+    Name = "kri-alb_sg"
   }
 }
